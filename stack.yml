@@ -1,0 +1,22 @@
+# docker stack deploy --compose-file stack.yml nlp
+version: '3.7'
+
+services:
+  nlp-client:
+    image: 676164205626.dkr.ecr.us-east-1.amazonaws.com/nlp-client:1.0.0
+    networks:
+      - nlp-demo
+    ports:
+      - 8080:8080
+  rake:
+    image: 676164205626.dkr.ecr.us-east-1.amazonaws.com/rake:1.0.0
+    networks:
+      - nlp-demo
+    ports:
+      - 8081:8080
+
+networks:
+  nlp-demo:
+
+volumes:
+  data: {}
