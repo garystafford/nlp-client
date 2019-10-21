@@ -4,9 +4,7 @@
 ################################
 # STEP 1 build executable binary
 ################################
-FROM golang:1.13-alpine AS builder
-
-EXPOSE 8080
+FROM golang:1.13.3-alpine AS builder
 
 # Install git, zoneinfo, and SSL certs
 RUN apk update && apk add --no-cache git ca-certificates tzdata
@@ -17,6 +15,7 @@ RUN adduser -D -g '' appuser
 # Copy file(s)
 WORKDIR /go/src/app
 COPY main.go .
+COPY prose.go .
 
 # Using go get
 RUN go get -d -v
