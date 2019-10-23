@@ -19,8 +19,8 @@ import (
 
 var (
 	portClient = os.Getenv("NLP_CLIENT_PORT")
-	urlRack = os.Getenv("RACK_ENDPOINT")
-	urlProse = os.Getenv("PROSE_ENDPOINT")
+	urlRack    = os.Getenv("RACK_ENDPOINT")
+	urlProse   = os.Getenv("PROSE_ENDPOINT")
 )
 
 func main() {
@@ -57,7 +57,7 @@ func getHealth(c echo.Context) error {
 	var response interface{}
 	err := json.Unmarshal([]byte(`{"status":"UP"}`), &response)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, response)
@@ -65,7 +65,7 @@ func getHealth(c echo.Context) error {
 
 func extractKeywords(c echo.Context) error {
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRack + "/keywords", c.Request().Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRack+"/keywords", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
 	client := &http.Client{}
@@ -75,12 +75,12 @@ func extractKeywords(c echo.Context) error {
 	}
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, body)
@@ -88,7 +88,7 @@ func extractKeywords(c echo.Context) error {
 
 func extractTokens(c echo.Context) error {
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse + "/keywords", c.Request().Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/tokens", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
 	client := &http.Client{}
@@ -98,12 +98,12 @@ func extractTokens(c echo.Context) error {
 	}
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, body)
@@ -111,7 +111,7 @@ func extractTokens(c echo.Context) error {
 
 func extractEntities(c echo.Context) error {
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse + "/entities", c.Request().Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/entities", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
 	client := &http.Client{}
@@ -121,12 +121,12 @@ func extractEntities(c echo.Context) error {
 	}
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, body)
