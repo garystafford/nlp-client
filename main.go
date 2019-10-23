@@ -18,15 +18,15 @@ import (
 )
 
 var (
-	portClient = os.Getenv("NLP_CLIENT_PORT")
-	urlRack    = os.Getenv("RACK_ENDPOINT")
-	urlProse   = os.Getenv("PROSE_ENDPOINT")
+	portClient = getEnv("NLP_CLIENT_PORT", "8080")
+	urlRack    = getEnv("RACK_PORT", "8080")
+	urlProse   = getEnv("PROSE_PORT", "8080")
+
+	// Echo instance
+	e = echo.New()
 )
 
 func main() {
-	// Echo instance
-	e := echo.New()
-
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -45,12 +45,28 @@ func main() {
 
 	// Routes
 	e.GET("/health", getHealth)
-	e.POST("/keywords", extractKeywords)
-	e.POST("/tokens", extractTokens)
-	e.POST("/entities", extractEntities)
+	e.GET("/routes", getRoutes)
+	e.POST("/keywords", getKeywords)
+	e.POST("/tokens", getTokens)
+	e.POST("/entities", getEntities)
 
 	// Start server
 	e.Logger.Fatal(e.Start(portClient))
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
+
+func getRoutes(c echo.Context) error {
+	data, err := json.MarshalIndent(e.Routes(), "", "  ")
+	if err != nil {
+		return err
+	}
+	return c.JSONBlob(http.StatusOK, data)
 }
 
 func getHealth(c echo.Context) error {
@@ -63,7 +79,7 @@ func getHealth(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-func extractKeywords(c echo.Context) error {
+func getKeywords(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRack+"/keywords", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
@@ -86,7 +102,7 @@ func extractKeywords(c echo.Context) error {
 	return c.JSONBlob(http.StatusOK, body)
 }
 
-func extractTokens(c echo.Context) error {
+func getTokens(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/tokens", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
@@ -109,7 +125,7 @@ func extractTokens(c echo.Context) error {
 	return c.JSONBlob(http.StatusOK, body)
 }
 
-func extractEntities(c echo.Context) error {
+func getEntities(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/entities", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
