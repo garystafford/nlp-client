@@ -15,7 +15,7 @@ RUN adduser -D -g '' appuser
 # Copy file(s)
 WORKDIR /go/src/app
 COPY main.go .
-COPY prose.go .
+#COPY prose.go .
 
 # Using go get
 RUN go get -d -v

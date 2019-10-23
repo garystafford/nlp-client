@@ -17,9 +17,13 @@ import (
 	"golang.org/x/net/context"
 )
 
-func main() {
-	port := os.Getenv("NLP_CLIENT_PORT")
+var (
+	portClient = os.Getenv("NLP_CLIENT_PORT")
+	urlRack = os.Getenv("RACK_ENDPOINT")
+	urlProse = os.Getenv("PROSE_ENDPOINT")
+)
 
+func main() {
 	// Echo instance
 	e := echo.New()
 
@@ -46,7 +50,7 @@ func main() {
 	e.POST("/entities", extractEntities)
 
 	// Start server
-	e.Logger.Fatal(e.Start(port))
+	e.Logger.Fatal(e.Start(portClient))
 }
 
 func getHealth(c echo.Context) error {
@@ -60,9 +64,8 @@ func getHealth(c echo.Context) error {
 }
 
 func extractKeywords(c echo.Context) error {
-	url := os.Getenv("RACK_ENDPOINT")
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, c.Request().Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRack + "/keywords", c.Request().Body)
 	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
 	client := &http.Client{}
@@ -84,33 +87,47 @@ func extractKeywords(c echo.Context) error {
 }
 
 func extractTokens(c echo.Context) error {
-	jsonMap := make(map[string]interface{})
-	err := json.NewDecoder(c.Request().Body).Decode(&jsonMap)
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse + "/keywords", c.Request().Body)
+	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
-	text := jsonMap["text"] // request body - 'text' json attribute value
-	tokens, err := getTokens(text.(string))
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
-	return c.JSON(http.StatusOK, tokens)
+	return c.JSONBlob(http.StatusOK, body)
 }
 
 func extractEntities(c echo.Context) error {
-	jsonMap := make(map[string]interface{})
-	err := json.NewDecoder(c.Request().Body).Decode(&jsonMap)
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse + "/entities", c.Request().Body)
+	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
-	text := jsonMap["text"] // request body - 'text' json attribute value
-	entities, err := getEntities(text.(string))
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
-	return c.JSON(http.StatusOK, entities)
+	return c.JSONBlob(http.StatusOK, body)
 }
