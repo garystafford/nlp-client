@@ -19,8 +19,8 @@ import (
 
 var (
 	portClient = getEnv("NLP_CLIENT_PORT", "8080")
-	urlRack    = getEnv("RACK_PORT", "8080")
-	urlProse   = getEnv("PROSE_PORT", "8080")
+	urlRack    = getEnv("RACK_ENDPOINT", "http://localhost:8081")
+	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8082")
 
 	// Echo instance
 	e = echo.New()
