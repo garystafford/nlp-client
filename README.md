@@ -42,9 +42,19 @@ docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/pro
 # display images
 docker image ls --filter=reference='*amazonaws.com/*'
 ```
+
+## Deploy Docker Stack
+
 Runing (3) service stack from Docker Swarm.
 
 ```bash
+# change me
+export ISV_ACCOUNT=01234567890
+export ISV_ECR_REGION=us-east-2
+export CUSTOMER_ACCOUNT=09876543210
+export CUSTOMER_ECR_REGION=us-west-2
+
+#don't change me
 export NLP_CLIENT_PORT=:8080
 export RAKE_PORT=:8080
 export PROSE_PORT=:8080
