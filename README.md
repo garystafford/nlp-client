@@ -2,8 +2,22 @@
 
 Go-based microservice, part of a set of (3) microservices for the application used in the blog post, [Amazon Elastic Container Registry (ECR) Cross-Account Access](https://programmaticponderings.com/). Please read the post for complete instructions on how to use the files in this repository.
 
+## Run from IDE
 
-## Build Three Required Images
+Run each of the (3) service from a different terminal window.
+
+```bash
+export NLP_CLIENT_PORT=:8080
+export RAKE_PORT=:8081
+export PROSE_PORT=:8082
+export RACK_ENDPOINT=http://localhost:8081
+export PROSE_ENDPOINT=http://localhost:8082
+export AUTH_KEY=SuP3r5eCRetAutHK3y
+
+go run *.go
+```
+
+## Build Required Images for Docker
 
 ```bash
 # change me
@@ -28,22 +42,6 @@ docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/pro
 # display images
 docker image ls --filter=reference='*amazonaws.com/*'
 ```
-
-## Run from IDE
-
-Run each of the (3) service from a different terminal window.
-
-```bash
-export NLP_CLIENT_PORT=:8080
-export RAKE_PORT=:8081
-export PROSE_PORT=:8082
-export RACK_ENDPOINT=http://localhost:8081
-export PROSE_ENDPOINT=http://localhost:8082
-export AUTH_KEY=SuP3r5eCRetAutHK3y
-
-go run *.go
-```
-
 Runing (3) service stack from Docker Swarm.
 
 ```bash
