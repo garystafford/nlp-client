@@ -7,9 +7,9 @@ Go-based microservice, part of a set of (3) microservices for the application us
 Run each of the (3) service from a different terminal window.
 
 ```bash
-export NLP_CLIENT_PORT=:8080
-export RAKE_PORT=:8081
-export PROSE_PORT=:8082
+export NLP_CLIENT_PORT=8080
+export RAKE_PORT=8081
+export PROSE_PORT=8082
 export RACK_ENDPOINT=http://localhost:8081
 export PROSE_ENDPOINT=http://localhost:8082
 export AUTH_KEY=SuP3r5eCRetAutHK3y
@@ -54,10 +54,10 @@ export ISV_ECR_REGION=us-east-2
 export CUSTOMER_ACCOUNT=09876543210
 export CUSTOMER_ECR_REGION=us-west-2
 
-#don't change me
-export NLP_CLIENT_PORT=:8080
-export RAKE_PORT=:8080
-export PROSE_PORT=:8080
+# don't change me
+export NLP_CLIENT_PORT=8080
+export RAKE_PORT=8080
+export PROSE_PORT=8080
 export RACK_ENDPOINT=http://rake-app:8080
 export PROSE_ENDPOINT=http://prose-app:8080
 export AUTH_KEY=SuP3r5eCRetAutHK3y
