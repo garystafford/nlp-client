@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	portClient = getEnv("NLP_CLIENT_PORT", "8080")
+	serverPort = ":" + getEnv("NLP_CLIENT_PORT", ":8080")
 	urlRack    = getEnv("RACK_ENDPOINT", "http://localhost:8081")
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8082")
 
@@ -51,7 +51,7 @@ func main() {
 	e.POST("/entities", getEntities)
 
 	// Start server
-	e.Logger.Fatal(e.Start(portClient))
+	e.Logger.Fatal(e.Start(serverPort))
 }
 
 func getEnv(key, fallback string) string {
