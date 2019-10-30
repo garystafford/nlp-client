@@ -1,0 +1,21 @@
+# based on: https://docs.aws.amazon.com/codebuild/latest/userguide/sample-docker.html
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $ISV_ECR_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $AWS_ACCOUNT.dkr.ecr.$ECR_REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG . --no-cache
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT.dkr.ecr.$ECR_REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
