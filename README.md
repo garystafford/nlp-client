@@ -1,6 +1,6 @@
 # Go Microservice: nlp-client
 
-Go-based microservice, part of a set of (3) microservices for the application used in the blog post, [Amazon Elastic Container Registry (ECR) Cross-Account Access](https://programmaticponderings.com/). Please read the post for complete instructions on how to use the files in this repository.
+Go-based microservice, part of a set of (3) microservices for the application used in the blog post, [Amazon ECR Cross-Account Access for Containerized Applications on ECS](https://wp.me/p1RD28-6vd). Please read the post for complete instructions on how to use the files in this repository.
 
 ## Run from IDE
 
@@ -10,8 +10,8 @@ Run each of the (3) service from a different terminal window.
 export NLP_CLIENT_PORT=8080
 export RAKE_PORT=8081
 export PROSE_PORT=8082
-export RACK_ENDPOINT=http://localhost:8081
-export PROSE_ENDPOINT=http://localhost:8082
+export RACK_ENDPOINT=http://localhost:${RAKE_PORT}
+export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
 export AUTH_KEY=SuP3r5eCRetAutHK3y
 
 go run *.go
@@ -45,7 +45,7 @@ docker image ls --filter=reference='*amazonaws.com/*'
 
 ## Deploy Docker Stack
 
-Runing (3) service stack from Docker Swarm.
+Running (3) service Stack locally, from Docker Swarm.
 
 ```bash
 # change me
@@ -58,8 +58,8 @@ export CUSTOMER_ECR_REGION=us-west-2
 export NLP_CLIENT_PORT=8080
 export RAKE_PORT=8080
 export PROSE_PORT=8080
-export RACK_ENDPOINT=http://rake-app:8080
-export PROSE_ENDPOINT=http://prose-app:8080
+export RACK_ENDPOINT=http://rake-app:${RAKE_PORT}
+export PROSE_ENDPOINT=http://prose-app:${PROSE_PORT}
 export AUTH_KEY=SuP3r5eCRetAutHK3y
 
 docker stack deploy --compose-file stack.yml nlp
