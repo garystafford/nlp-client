@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	serverPort = ":" + getEnv("NLP_CLIENT_PORT", ":8080")
+	serverPort = ":" + getEnv("NLP_CLIENT_PORT", "8080")
 	urlRack    = getEnv("RACK_ENDPOINT", "http://localhost:8081")
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8082")
 
