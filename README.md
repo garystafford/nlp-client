@@ -23,7 +23,7 @@ go run *.go
 
 ```bash
 # change me
-export ISV_ACCOUNT=01234567890
+export ISV_ACCOUNT=111222333444
 export ISV_ECR_REGION=us-east-2
 
 $(aws ecr get-login --no-include-email --region us-east-2)
@@ -31,7 +31,7 @@ docker build -t ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:
 docker push ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.0.0
 
 # change me
-export CUSTOMER_ACCOUNT=09876543210
+export CUSTOMER_ACCOUNT=999888777666
 export CUSTOMER_ECR_REGION=us-west-2
 
 $(aws ecr get-login --no-include-email --region ${CUSTOMER_ECR_REGION})
@@ -54,9 +54,9 @@ Running (4) service Stack locally, from Docker Swarm.
 
 ```bash
 # change me
-export ISV_ACCOUNT=01234567890
+export ISV_ACCOUNT=111222333444
 export ISV_ECR_REGION=us-east-2
-export CUSTOMER_ACCOUNT=09876543210
+export CUSTOMER_ACCOUNT=999888777666
 export CUSTOMER_ECR_REGION=us-west-2
 
 # don't change me
@@ -91,9 +91,9 @@ Creating service nlp_lang-app
 
 Admin-01:~/environment/ecr-cross-accnt-demo (master) $ docker container ls
 CONTAINER ID        IMAGE                                                           COMMAND             CREATED             STATUS              PORTS               NAMES
-ac5501bb9a79        01234567890.dkr.ecr.us-east-2.amazonaws.com/rake-app:1.0.0     "/go/bin/app"       14 seconds ago      Up 13 seconds                           nlp_rake-app.1.jpctxbvzhcseo8uwuldwlp7hp
-7dc171f89f9f        09876543210.dkr.ecr.us-west-2.amazonaws.com/nlp-client:1.0.0   "/go/bin/app"       15 seconds ago      Up 12 seconds                           nlp_nlp-client.1.t96hg46g76uwsvr7i6bweluxz
-7ae5369d4293        09876543210.dkr.ecr.us-west-2.amazonaws.com/prose-app:1.0.0    "/go/bin/app"       15 seconds ago      Up 13 seconds                           nlp_prose-app.1.6wkb8x6slva7t253ksucfshyu
-4ab51b9f4271        09876543210.dkr.ecr.us-west-2.amazonaws.com/lang-app:1.0.0     "/go/bin/app"       15 seconds ago      Up 13 seconds                           nlp_prose-app.1.6wkb8x6slva7t253ksucfshyu
+ac5501bb9a79        111222333444.dkr.ecr.us-east-2.amazonaws.com/rake-app:1.0.0     "/go/bin/app"       14 seconds ago      Up 13 seconds                           nlp_rake-app.1.jpctxbvzhcseo8uwuldwlp7hp
+7dc171f89f9f        999888777666.dkr.ecr.us-west-2.amazonaws.com/nlp-client:1.0.0   "/go/bin/app"       15 seconds ago      Up 12 seconds                           nlp_nlp-client.1.t96hg46g76uwsvr7i6bweluxz
+7ae5369d4293        999888777666.dkr.ecr.us-west-2.amazonaws.com/prose-app:1.0.0    "/go/bin/app"       15 seconds ago      Up 13 seconds                           nlp_prose-app.1.6wkb8x6slva7t253ksucfshyu
+4ab51b9f4271        999888777666.dkr.ecr.us-west-2.amazonaws.com/lang-app:1.0.0     "/go/bin/app"       15 seconds ago      Up 13 seconds                           nlp_prose-app.1.6wkb8x6slva7t253ksucfshyu
 Admin-01:~/environment/ecr-cross-accnt-demo (master) $ 
 ```
