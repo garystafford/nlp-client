@@ -84,6 +84,11 @@ func getHealth(c echo.Context) error {
 
 func getError(c echo.Context) error {
 	var response interface{}
+	err := json.Unmarshal([]byte(`{"error":"500 Internal Server Error"}`), &response)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
+	}
+
 	return c.JSON(http.StatusInternalServerError, response)
 }
 
