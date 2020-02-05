@@ -26,7 +26,7 @@ go run *.go
 export ISV_ACCOUNT=111222333444
 export ISV_ECR_REGION=us-east-2
 
-$(aws ecr get-login --no-include-email --region us-east-2)
+$(aws ecr get-login --no-include-email --region ${ISV_ECR_REGION})
 docker build -t ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.0.0 . --no-cache
 docker push ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.0.0
 
