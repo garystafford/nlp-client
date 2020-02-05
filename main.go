@@ -7,20 +7,20 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"golang.org/x/net/context"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
-	"golang.org/x/net/context"
 )
 
 var (
 	serverPort = ":" + getEnv("NLP_CLIENT_PORT", "8080")
 	urlRack    = getEnv("RACK_ENDPOINT", "http://localhost:8081")
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8082")
+	urlLang    = getEnv("LANG_ENDPOINT", "http://localhost:8083")
 
 	// Echo instance
 	e = echo.New()
@@ -49,6 +49,7 @@ func main() {
 	e.POST("/keywords", getKeywords)
 	e.POST("/tokens", getTokens)
 	e.POST("/entities", getEntities)
+	e.POST("/language", getLanguage)
 
 	// Start server
 	e.Logger.Fatal(e.Start(serverPort))
@@ -66,6 +67,7 @@ func getRoutes(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+
 	return c.JSONBlob(http.StatusOK, data)
 }
 
@@ -82,54 +84,33 @@ func getHealth(c echo.Context) error {
 func getKeywords(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRack+"/keywords", c.Request().Body)
-	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
-
-	return c.JSONBlob(http.StatusOK, body)
+	return serviceResponse(err, req, c)
 }
 
 func getTokens(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/tokens", c.Request().Body)
-	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
-
-	return c.JSONBlob(http.StatusOK, body)
+	return serviceResponse(err, req, c)
 }
 
 func getEntities(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/entities", c.Request().Body)
-	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 
+	return serviceResponse(err, req, c)
+}
+
+func getLanguage(c echo.Context) error {
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlLang+"/language", c.Request().Body)
+
+	return serviceResponse(err, req, c)
+}
+
+func serviceResponse(err error, req *http.Request, c echo.Context) error {
+	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if resp != nil {
