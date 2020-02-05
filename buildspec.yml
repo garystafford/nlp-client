@@ -14,9 +14,9 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $AWS_ACCOUNT.dkr.ecr.$ECR_REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG . --no-cache
+      - docker build -t $ECR_ACCOUNT.dkr.ecr.$ECR_REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG . --no-cache
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT.dkr.ecr.$ECR_REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
+      - docker push $ECR_ACCOUNT.dkr.ecr.$ECR_REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
