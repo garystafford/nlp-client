@@ -45,6 +45,7 @@ func main() {
 
 	// Routes
 	e.GET("/health", getHealth)
+	e.GET("/error", getError)
 	e.GET("/routes", getRoutes)
 	e.POST("/keywords", getKeywords)
 	e.POST("/tokens", getTokens)
@@ -79,6 +80,11 @@ func getHealth(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, response)
+}
+
+func getError(c echo.Context) error {
+	var response interface{}
+	return c.JSON(http.StatusInternalServerError, response)
 }
 
 func getKeywords(c echo.Context) error {
