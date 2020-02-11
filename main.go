@@ -145,7 +145,7 @@ func putDynamo(c echo.Context) error {
 }
 
 func serviceResponse(err error, req *http.Request, c echo.Context) error {
-	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
+	req.Header.Set("X-API-Key", c.Request().Header.Get("X-API-Key"))
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if resp != nil {
