@@ -83,7 +83,7 @@ func getEnv(key, fallback string) string {
 func getRoutes(c echo.Context) error {
 	response, err := json.MarshalIndent(e.Routes(), "", "  ")
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, response)
@@ -93,7 +93,7 @@ func getHealth(c echo.Context) error {
 	var response interface{}
 	err := json.Unmarshal([]byte(`{"status":"UP"}`), &response)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, response)
@@ -103,7 +103,7 @@ func getError(c echo.Context) error {
 	var response interface{}
 	err := json.Unmarshal([]byte(`{"error":"500 Internal Server Error"}`), &response)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusInternalServerError, response)
@@ -152,12 +152,12 @@ func serviceResponse(err error, req *http.Request, c echo.Context) error {
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, body)
