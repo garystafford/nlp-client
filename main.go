@@ -20,6 +20,7 @@ var (
 	urlRack    = getEnv("RAKE_ENDPOINT", "http://localhost:8080")
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8080")
 	urlLang    = getEnv("LANG_ENDPOINT", "http://localhost:8080")
+	urlDynamo  = getEnv("DYNAMO_ENDPOINT", "http://localhost:8080")
 
 	// Echo instance
 	e = echo.New()
@@ -46,10 +47,12 @@ func main() {
 	e.GET("/health", getHealth)
 	e.GET("/error", getError)
 	e.GET("/routes", getRoutes)
+
 	e.POST("/keywords", getKeywords)
 	e.POST("/tokens", getTokens)
 	e.POST("/entities", getEntities)
 	e.POST("/language", getLanguage)
+	e.POST("/record", putDynamo)
 
 	// Start server
 	e.Logger.Fatal(e.Start(serverPort))
@@ -63,12 +66,12 @@ func getEnv(key, fallback string) string {
 }
 
 func getRoutes(c echo.Context) error {
-	data, err := json.MarshalIndent(e.Routes(), "", "  ")
+	response, err := json.MarshalIndent(e.Routes(), "", "  ")
 	if err != nil {
-		return err
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
-	return c.JSONBlob(http.StatusOK, data)
+	return c.JSONBlob(http.StatusOK, response)
 }
 
 func getHealth(c echo.Context) error {
@@ -119,14 +122,20 @@ func getLanguage(c echo.Context) error {
 	return serviceResponse(err, req, c)
 }
 
+func putDynamo(c echo.Context) error {
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlDynamo+"/record", c.Request().Body)
+
+	return serviceResponse(err, req, c)
+}
+
 func serviceResponse(err error, req *http.Request, c echo.Context) error {
-	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
+	//req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if resp != nil {
 		defer resp.Body.Close()
 	}
-
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
