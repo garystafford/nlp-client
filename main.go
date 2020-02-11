@@ -9,10 +9,13 @@ import (
 	"encoding/json"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
+	"time"
 )
 
 var (
@@ -21,27 +24,39 @@ var (
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8080")
 	urlLang    = getEnv("LANG_ENDPOINT", "http://localhost:8080")
 	urlDynamo  = getEnv("DYNAMO_ENDPOINT", "http://localhost:8080")
-
-	// Echo instance
-	e = echo.New()
+	apiKey     = getEnv("API_KEY", "")
+	log        = logrus.New()
 )
 
+func init() {
+	log.Formatter = &logrus.JSONFormatter{
+		TimestampFormat: time.RFC3339Nano,
+	}
+	log.Out = os.Stdout
+	log.SetLevel(logrus.DebugLevel)
+}
+
 func main() {
+	// Echo instance
+	e := echo.New()
+
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	//e.Use(middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
-	//	Skipper: func(c echo.Context) bool {
-	//		if strings.HasPrefix(c.Request().RequestURI, "/health") {
-	//			return true
-	//		}
-	//		return false
-	//	},
-	//	Validator: func(key string, c echo.Context) (bool, error) {
-	//		return key == os.Getenv("AUTH_KEY"), nil
-	//	},
-	//}))
+	e.Use(middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
+		KeyLookup: "header:X-API-Key",
+		Skipper: func(c echo.Context) bool {
+			if strings.HasPrefix(c.Request().RequestURI, "/health") {
+				return true
+			}
+			return false
+		},
+		Validator: func(key string, c echo.Context) (bool, error) {
+			log.Debugf("API_KEY: %v", apiKey)
+			return key == apiKey, nil
+		},
+	}))
 
 	// Routes
 	e.GET("/health", getHealth)
@@ -62,6 +77,7 @@ func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}
+
 	return fallback
 }
 
@@ -130,7 +146,7 @@ func putDynamo(c echo.Context) error {
 }
 
 func serviceResponse(err error, req *http.Request, c echo.Context) error {
-	//req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
+	req.Header.Set("Authorization", c.Request().Header.Get("Authorization"))
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if resp != nil {
