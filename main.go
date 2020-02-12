@@ -20,7 +20,7 @@ import (
 
 var (
 	serverPort = ":" + getEnv("NLP_CLIENT_PORT", "8080")
-	urlRack    = getEnv("RAKE_ENDPOINT", "http://localhost:8080")
+	urlRake    = getEnv("RAKE_ENDPOINT", "http://localhost:8080")
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8080")
 	urlLang    = getEnv("LANG_ENDPOINT", "http://localhost:8080")
 	urlDynamo  = getEnv("DYNAMO_ENDPOINT", "http://localhost:8080")
@@ -60,6 +60,7 @@ func main() {
 
 	// Routes
 	e.GET("/health", getHealth)
+	e.GET("/health/:app", getHealthUpstream)
 	e.GET("/error", getError)
 	e.GET("/routes", getRoutes)
 	e.POST("/keywords", getKeywords)
@@ -83,7 +84,7 @@ func getEnv(key, fallback string) string {
 func getRoutes(c echo.Context) error {
 	response, err := json.MarshalIndent(e.Routes(), "", "  ")
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, response)
@@ -93,17 +94,36 @@ func getHealth(c echo.Context) error {
 	var response interface{}
 	err := json.Unmarshal([]byte(`{"status":"UP"}`), &response)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusOK, response)
+}
+
+func getHealthUpstream(c echo.Context) error {
+	var urlHealth = ""
+	switch c.Param("app") {
+	case "rake-app":
+		urlHealth = urlRake
+	case "prose-app":
+		urlHealth = urlProse
+	case "lang-app":
+		urlHealth = urlLang
+	case "dynamo-app":
+		urlHealth = urlDynamo
+	}
+
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlHealth+"/health", c.Request().Body)
+
+	return serviceResponse(err, req, c)
 }
 
 func getError(c echo.Context) error {
 	var response interface{}
 	err := json.Unmarshal([]byte(`{"error":"500 Internal Server Error"}`), &response)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSON(http.StatusInternalServerError, response)
@@ -111,7 +131,7 @@ func getError(c echo.Context) error {
 
 func getKeywords(c echo.Context) error {
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRack+"/keywords", c.Request().Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlRake+"/keywords", c.Request().Body)
 
 	return serviceResponse(err, req, c)
 }
@@ -152,12 +172,12 @@ func serviceResponse(err error, req *http.Request, c echo.Context) error {
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 
 	return c.JSONBlob(http.StatusOK, body)

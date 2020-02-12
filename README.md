@@ -20,7 +20,7 @@ Run each of the (5) service from a different terminal window.
     export PROSE_PORT=8082
     export LANG_PORT=8083
     export DYNAMO_PORT=8084
-    export RACK_ENDPOINT=http://localhost:${RAKE_PORT}
+    export RAKE_ENDPOINT=http://localhost:${RAKE_PORT}
     export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
     export LANG_ENDPOINT=http://localhost:${LANG_PORT}
     export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
@@ -85,7 +85,7 @@ export RAKE_PORT=8080
 export PROSE_PORT=8080
 export LANG_PORT=8080
 export DYNAMO_PORT=8080
-export RACK_ENDPOINT=http://localhost:${RAKE_PORT}
+export RAKE_ENDPOINT=http://localhost:${RAKE_PORT}
 export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
 export LANG_ENDPOINT=http://localhost:${LANG_PORT}
 export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
