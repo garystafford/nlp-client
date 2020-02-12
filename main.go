@@ -103,30 +103,26 @@ func getHealth(c echo.Context) error {
 func getHealthUpstream(c echo.Context) error {
 	var urlHealth = ""
 	switch c.Param("app") {
-	case "rake-app":
+	case "rake":
 		urlHealth = urlRake
-	case "prose-app":
+	case "prose":
 		urlHealth = urlProse
-	case "lang-app":
+	case "lang":
 		urlHealth = urlLang
-	case "dynamo-app":
+	case "dynamo":
 		urlHealth = urlDynamo
+	default:
+		return echo.NewHTTPError(http.StatusMethodNotAllowed)
 	}
 
 	ctx := context.Background()
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlHealth+"/health", c.Request().Body)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlHealth+"/health", c.Request().Body)
 
 	return serviceResponse(err, req, c)
 }
 
 func getError(c echo.Context) error {
-	var response interface{}
-	err := json.Unmarshal([]byte(`{"error":"500 Internal Server Error"}`), &response)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
-
-	return c.JSON(http.StatusInternalServerError, response)
+	return echo.NewHTTPError(http.StatusInternalServerError)
 }
 
 func getKeywords(c echo.Context) error {
