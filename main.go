@@ -66,6 +66,7 @@ func main() {
 	e.POST("/keywords", getKeywords)
 	e.POST("/tokens", getTokens)
 	e.POST("/entities", getEntities)
+	e.POST("/sentences", getSentences)
 	e.POST("/language", getLanguage)
 	e.POST("/record", putDynamo)
 
@@ -142,6 +143,13 @@ func getTokens(c echo.Context) error {
 func getEntities(c echo.Context) error {
 	ctx := context.Background()
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/entities", c.Request().Body)
+
+	return serviceResponse(err, req, c)
+}
+
+func getSentences(c echo.Context) error {
+	ctx := context.Background()
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlProse+"/sentences", c.Request().Body)
 
 	return serviceResponse(err, req, c)
 }
