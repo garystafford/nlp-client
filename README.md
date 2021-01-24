@@ -25,12 +25,12 @@ Run each of the (5) service from a different terminal window.
     export LANG_ENDPOINT=http://localhost:${LANG_PORT}
     export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
     export API_KEY=SuP3r5eCRetAutHK3y
-    TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
+    export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
 
 go run *.go
 
 curl -s -X POST \
-    http://localhost:NLP_CLIENT_PORT/routes \
+    http://localhost:${NLP_CLIENT_PORT}/routes \
     -H "X-API-Key: ${API_KEY}" \
     -H "Content-Type: application/json" \
     -d "{\"text\": \"${TEXT}\"}"
