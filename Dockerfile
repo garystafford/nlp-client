@@ -4,7 +4,7 @@
 ################################
 # STEP 1 build executable binary
 ################################
-FROM golang:1.14-alpine AS builder
+FROM golang:1.16.3-alpine3.13 AS builder
 
 # Install git, zoneinfo, and SSL certs
 RUN apk update && apk add --no-cache git ca-certificates tzdata
@@ -16,8 +16,14 @@ RUN adduser -D -g '' appuser
 WORKDIR /go/src/app
 COPY main.go .
 
+# creates go.mod file to track code dependencies
+RUN go mod init
+
+# ensures go.mod file matches source code in the module
+RUN go mod tidy
+
 # Using go get
-RUN go get -d -v
+#RUN go get -d -v
 
 # Disable crosscompiling
 ENV CGO_ENABLED=0

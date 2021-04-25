@@ -1,7 +1,8 @@
 // author: Gary A. Stafford
 // site: https://programmaticponderings.com
 // license: MIT License
-// purpose: Simple echo-based microservice: nlp-client
+// purpose: NLP microservices: nlp-client
+// modified: 2021-04-25
 
 package main
 
