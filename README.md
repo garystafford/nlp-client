@@ -14,6 +14,65 @@ post for complete instructions on how to use the files in this repository.
 
 ![Architecture](diagram/nlp_diagram.png)
 
+## Routes
+
+The follow routes are available though the NLP Client.
+
+```json
+[
+    {
+        "method": "GET",
+        "path": "/error",
+        "name": "main.getError"
+    },
+    {
+        "method": "POST",
+        "path": "/keywords",
+        "name": "main.getKeywords"
+    },
+    {
+        "method": "POST",
+        "path": "/language",
+        "name": "main.getLanguage"
+    },
+    {
+        "method": "GET",
+        "path": "/health",
+        "name": "main.getHealth"
+    },
+    {
+        "method": "GET",
+        "path": "/health/:app",
+        "name": "main.getHealthUpstream"
+    },
+    {
+        "method": "GET",
+        "path": "/routes",
+        "name": "main.getRoutes"
+    },
+    {
+        "method": "POST",
+        "path": "/tokens",
+        "name": "main.getTokens"
+    },
+    {
+        "method": "POST",
+        "path": "/entities",
+        "name": "main.getEntities"
+    },
+    {
+        "method": "POST",
+        "path": "/sentences",
+        "name": "main.getSentences"
+    },
+    {
+        "method": "POST",
+        "path": "/record",
+        "name": "main.putDynamo"
+    }
+]
+```
+
 ## Build and Push to Docker Hub
 
 ```shell
