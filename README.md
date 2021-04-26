@@ -10,6 +10,10 @@ post for complete instructions on how to use the files in this repository.
 4. [lang-app](https://github.com/garystafford/lang-app)
 5. [rake-app](https://github.com/garystafford/rake-app)
 
+## Architecture
+
+![Architecture](./diagram/NLP-Go.png)
+
 ## Build and Push to Docker Hub
 
 ```shell
