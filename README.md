@@ -12,7 +12,7 @@ post for complete instructions on how to use the files in this repository.
 
 ## Architecture
 
-![Architecture](diagram/nlp_diagram.png)
+![Architecture](diagram/nlp_diagram2.png)
 
 ## Routes
 
