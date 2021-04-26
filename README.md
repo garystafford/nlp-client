@@ -1,8 +1,14 @@
-# Go Microservice: nlp-client
+# Go Microservice: NLP Client
 
 Go-based microservice, part of a set of (5) microservices for the application used in the blog
 post, [Amazon ECR Cross-Account Access for Containerized Applications on ECS](https://wp.me/p1RD28-6vd). Please read the
 post for complete instructions on how to use the files in this repository.
+
+1. [nlp-client](https://github.com/garystafford/nlp-client)
+2. [dynamo-app](https://github.com/garystafford/dynamo-app)
+3. [prose-app](https://github.com/garystafford/prose-app)
+4. [lang-app](https://github.com/garystafford/lang-app)
+5. [rake-app](https://github.com/garystafford/rake-app)
 
 ## Build and Push to Docker Hub
 

@@ -127,3 +127,8 @@ Temporary Items
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+### Cloud9 template
+# Cloud9 IDE - http://c9.io
+.c9revisions
+.c9
+
