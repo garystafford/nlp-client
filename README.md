@@ -12,7 +12,7 @@ post for complete instructions on how to use the files in this repository.
 
 ## Architecture
 
-![Architecture](./diagram/NLP-Go.png)
+![Architecture](diagram/nlp_diagram.png)
 
 ## Build and Push to Docker Hub
 
