@@ -20,67 +20,68 @@ The follow routes are available though the NLP Client.
 
 ```json
 [
-    {
-        "method": "GET",
-        "path": "/error",
-        "name": "main.getError"
-    },
-    {
-        "method": "POST",
-        "path": "/keywords",
-        "name": "main.getKeywords"
-    },
-    {
-        "method": "POST",
-        "path": "/language",
-        "name": "main.getLanguage"
-    },
-    {
-        "method": "GET",
-        "path": "/health",
-        "name": "main.getHealth"
-    },
-    {
-        "method": "GET",
-        "path": "/health/:app",
-        "name": "main.getHealthUpstream"
-    },
-    {
-        "method": "GET",
-        "path": "/routes",
-        "name": "main.getRoutes"
-    },
-    {
-        "method": "POST",
-        "path": "/tokens",
-        "name": "main.getTokens"
-    },
-    {
-        "method": "POST",
-        "path": "/entities",
-        "name": "main.getEntities"
-    },
-    {
-        "method": "POST",
-        "path": "/sentences",
-        "name": "main.getSentences"
-    },
-    {
-        "method": "POST",
-        "path": "/record",
-        "name": "main.putDynamo"
-    }
+  {
+    "method": "GET",
+    "path": "/error",
+    "name": "main.getError"
+  },
+  {
+    "method": "POST",
+    "path": "/keywords",
+    "name": "main.getKeywords"
+  },
+  {
+    "method": "POST",
+    "path": "/language",
+    "name": "main.getLanguage"
+  },
+  {
+    "method": "GET",
+    "path": "/health",
+    "name": "main.getHealth"
+  },
+  {
+    "method": "GET",
+    "path": "/health/:app",
+    "name": "main.getHealthUpstream"
+  },
+  {
+    "method": "GET",
+    "path": "/routes",
+    "name": "main.getRoutes"
+  },
+  {
+    "method": "POST",
+    "path": "/tokens",
+    "name": "main.getTokens"
+  },
+  {
+    "method": "POST",
+    "path": "/entities",
+    "name": "main.getEntities"
+  },
+  {
+    "method": "POST",
+    "path": "/sentences",
+    "name": "main.getSentences"
+  },
+  {
+    "method": "POST",
+    "path": "/record",
+    "name": "main.putDynamo"
+  }
 ]
 ```
 
-## Build and Push to Docker Hub
+## Build and Push Docker Image to Docker Hub
 
 ```shell
+git tag v1.1.0 && git push origin v1.1.0
 docker build -t garystafford/nlp-client:1.1.0 . --no-cache
 docker push garystafford/nlp-client:1.1.0
 ```
 
-## Run from IDE
+## Run Services Locally
 
 Create [DynamoDB CloudFormation stack](https://github.com/garystafford/dynamo-app/blob/master/dynamodb-table.yml) from
 the `dynamodb-table.yml` CloudFormation template. Creates the `NLPText` table.
@@ -94,17 +95,17 @@ aws cloudformation create-stack \
 Run each of the (5) service from a different terminal window.
 
 ```bash
-    export NLP_CLIENT_PORT=8080
-    export RAKE_PORT=8081
-    export PROSE_PORT=8082
-    export LANG_PORT=8083
-    export DYNAMO_PORT=8084
-    export RAKE_ENDPOINT=http://localhost:${RAKE_PORT}
-    export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
-    export LANG_ENDPOINT=http://localhost:${LANG_PORT}
-    export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
-    export API_KEY=SuP3r5eCRetAutHK3y
-    export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
+export NLP_CLIENT_PORT=8080
+export RAKE_PORT=8081
+export PROSE_PORT=8082
+export LANG_PORT=8083
+export DYNAMO_PORT=8084
+export RAKE_ENDPOINT=http://localhost:${RAKE_PORT}
+export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
+export LANG_ENDPOINT=http://localhost:${LANG_PORT}
+export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
+export API_KEY=SuP3r5eCRetAutHK3y
+export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
 
 ## Run service locally
 
@@ -129,22 +130,30 @@ curl -s -X POST \
     -d "{\"text\": \"${TEXT}\"}"
 ```
 
-## Build Required Images for Docker
+## Build Required Images for ECR
 
 ```bash
 # change me
-export ISV_ACCOUNT=111222333444
-export ISV_ECR_REGION=us-east-2
+export ISV_ACCOUNT=890966919088
+export ISV_ECR_REGION=us-west-2
+export CUSTOMER_ACCOUNT=676164205626
+export CUSTOMER_ECR_REGION=us-east-2
 
-$(aws ecr get-login --no-include-email --region ${ISV_ECR_REGION})
+aws ecr get-login-password \
+    --region ${ISV_ECR_REGION} \
+| docker login \
+    --username AWS \
+    --password-stdin ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com
+
 docker build -t ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.1.0 . --no-cache
 docker push ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.1.0
 
-# change me
-export CUSTOMER_ACCOUNT=999888777666
-export CUSTOMER_ECR_REGION=us-west-2
+aws ecr get-login-password \
+    --region ${CUSTOMER_ECR_REGION} \
+| docker login \
+    --username AWS \
+    --password-stdin ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com
 
-$(aws ecr get-login --no-include-email --region ${CUSTOMER_ECR_REGION})
 docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/nlp-client:1.1.0 . --no-cache
 docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/nlp-client:1.1.0
 
@@ -178,11 +187,12 @@ export RAKE_PORT=8080
 export PROSE_PORT=8080
 export LANG_PORT=8080
 export DYNAMO_PORT=8080
-export RAKE_ENDPOINT=http://localhost:${RAKE_PORT}
-export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
-export LANG_ENDPOINT=http://localhost:${LANG_PORT}
-export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
+export RAKE_ENDPOINT=rake-app:${RAKE_PORT}
+export PROSE_ENDPOINT=prose-app:${PROSE_PORT}
+export LANG_ENDPOINT=lang-app:${LANG_PORT}
+export DYNAMO_ENDPOINT=dynamo-app:${DYNAMO_PORT}
 export API_KEY=SuP3r5eCRetAutHK3y
+export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
 
 docker stack deploy --compose-file stack.yml nlp
 
@@ -197,15 +207,7 @@ docker stack rm nlp
 Sample output from Docker Swarm stack deployment.
 
 ```text
-> ~/environment/ecr-cross-accnt-demo (master) $ docker stack deploy --compose-file stack.yml nlp
-Creating network nlp_nlp-demo
-Creating service nlp_nlp-client
-Creating service nlp_rake-app
-Creating service nlp_prose-app
-Creating service nlp_lang-app
-Creating service nlp_dynamo-app
-
-> ~/environment/ecr-cross-accnt-demo (master) $ docker container ls
+> docker container ls
 CONTAINER ID        IMAGE                                                             COMMAND             CREATED             STATUS              PORTS               NAMES
 ac5501bb9a79        111222333444.dkr.ecr.us-east-2.amazonaws.com/rake-app:1.1.0       "/go/bin/app"       14 seconds ago      Up 13 seconds                           nlp_rake-app.1.jpctxbvzhcseo8uwuldwlp7hp
 7dc171f89f9f        999888777666.dkr.ecr.us-west-2.amazonaws.com/nlp-client:1.1.0     "/go/bin/app"       15 seconds ago      Up 12 seconds                           nlp_nlp-client.1.t96hg46g76uwsvr7i6bweluxz
