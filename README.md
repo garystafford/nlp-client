@@ -1,7 +1,7 @@
 # Go Microservice: NLP Client
 
 Go-based microservice, part of a set of (5) microservices for the application used in the blog
-post, [Amazon ECR Cross-Account Access for Containerized Applications on ECS](https://wp.me/p1RD28-6vd). Please read the
+post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80). Please read the
 post for complete instructions on how to use the files in this repository.
 
 1. [nlp-client](https://github.com/garystafford/nlp-client)
@@ -12,7 +12,7 @@ post for complete instructions on how to use the files in this repository.
 
 ## Architecture
 
-![Architecture](diagram/nlp_diagram2.png)
+![Architecture](diagram/nlp_diagram.png)
 
 ## Routes
 
@@ -134,10 +134,10 @@ curl -s -X POST \
 
 ```bash
 # change me
-export ISV_ACCOUNT=890966919088
-export ISV_ECR_REGION=us-west-2
-export CUSTOMER_ACCOUNT=676164205626
-export CUSTOMER_ECR_REGION=us-east-2
+export ISV_ACCOUNT=111222333444
+export ISV_ECR_REGION=us-east-2
+export CUSTOMER_ACCOUNT=999888777666
+export CUSTOMER_ECR_REGION=us-west-2
 
 aws ecr get-login-password \
     --region ${ISV_ECR_REGION} \
@@ -194,7 +194,7 @@ export DYNAMO_ENDPOINT=dynamo-app:${DYNAMO_PORT}
 export API_KEY=SuP3r5eCRetAutHK3y
 export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
 
-docker stack deploy --compose-file stack.yml nlp
+docker stack deploy --compose-file docker/stack.yml nlp
 
 # display containers
 docker stack ps nlp --no-trunc
@@ -208,10 +208,10 @@ Sample output from Docker Swarm stack deployment.
 
 ```text
 > docker container ls
-CONTAINER ID        IMAGE                                                             COMMAND             CREATED             STATUS              PORTS               NAMES
-ac5501bb9a79        111222333444.dkr.ecr.us-east-2.amazonaws.com/rake-app:1.1.0       "/go/bin/app"       14 seconds ago      Up 13 seconds                           nlp_rake-app.1.jpctxbvzhcseo8uwuldwlp7hp
-7dc171f89f9f        999888777666.dkr.ecr.us-west-2.amazonaws.com/nlp-client:1.1.0     "/go/bin/app"       15 seconds ago      Up 12 seconds                           nlp_nlp-client.1.t96hg46g76uwsvr7i6bweluxz
-7ae5369d4293        999888777666.dkr.ecr.us-west-2.amazonaws.com/prose-app:1.1.0      "/go/bin/app"       15 seconds ago      Up 13 seconds                           nlp_prose-app.1.6wkb8x6slva7t253ksucfshyu
-4ab51b9f4271        999888777666.dkr.ecr.us-west-2.amazonaws.com/lang-app:1.1.0       "/go/bin/app"       15 seconds ago      Up 13 seconds                           nlp_lang-app.1.hlczjvxpppecosuwdt8bhu7wl
-4ab51b9f4271        999888777666.dkr.ecr.us-west-2.amazonaws.com/dynamo-app:1.1.0     "/go/bin/app"       18 seconds ago      Up 13 seconds                           nlp_dynamo-app.1.twe6izgw7xhg6ruvu96sl6b74
+CONTAINER ID   IMAGE                           COMMAND         CREATED          STATUS          PORTS                    NAMES
+3534e9ea38dd   garystafford/prose-app:1.1.0    "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_prose-app.1.rsehzmd5j3eylt6a6h76lwdwx
+6f9affbbc369   garystafford/rake-app:1.1.0     "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_rake-app.1.fwggsue67gc0f0mri5av7z1y6
+215237a35523   garystafford/lang-app:1.1.0     "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_lang-app.1.a0mjdhp8f8lqjdx8wse36b6d3
+80cbf710d398   garystafford/nlp-client:1.1.0   "/go/bin/app"   18 minutes ago   Up 18 minutes   0.0.0.0:8080->8080/tcp   nlp_nlp-client.1.itupgd2tsuua0427yqv7cdhjk
+0ccce2965bfd   garystafford/dynamo-app:1.1.0   "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_dynamo-app.1.mb2pwkdtb3yn64al50bskgtwh
 ```
