@@ -187,10 +187,10 @@ export RAKE_PORT=8080
 export PROSE_PORT=8080
 export LANG_PORT=8080
 export DYNAMO_PORT=8080
-export RAKE_ENDPOINT=rake-app:${RAKE_PORT}
-export PROSE_ENDPOINT=prose-app:${PROSE_PORT}
-export LANG_ENDPOINT=lang-app:${LANG_PORT}
-export DYNAMO_ENDPOINT=dynamo-app:${DYNAMO_PORT}
+export RAKE_ENDPOINT=http://rake-app:${RAKE_PORT}
+export PROSE_ENDPOINT=http://prose-app:${PROSE_PORT}
+export LANG_ENDPOINT=http://lang-app:${LANG_PORT}
+export DYNAMO_ENDPOINT=http://dynamo-app:${DYNAMO_PORT}
 export API_KEY=SuP3r5eCRetAutHK3y
 export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
 
