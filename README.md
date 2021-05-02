@@ -114,17 +114,17 @@ go mod tidy -v
 go run *.go
 
 curl -s -X GET \
-    "http://localhost:${NLP_CLIENT_PORT}/health" \
+    "http://localhost:8080/health" \
     -H "X-API-Key: ${API_KEY}" \
     -H "Content-Type: application/json"
 
 curl -s -X GET \
-    "http://localhost:${NLP_CLIENT_PORT}/routes" \
+    "http://localhost:8080/routes" \
     -H "X-API-Key: ${API_KEY}" \
     -H "Content-Type: application/json"
 
 curl -s -X POST \
-    "http://localhost:${NLP_CLIENT_PORT}/keywords" \
+    "http://localhost:8080/keywords" \
     -H "X-API-Key: ${API_KEY}" \
     -H "Content-Type: application/json" \
     -d "{\"text\": \"${TEXT}\"}"
