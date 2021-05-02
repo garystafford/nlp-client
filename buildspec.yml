@@ -6,7 +6,7 @@ phases:
     commands:
       - env | sort
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com
+      - docker login -u AWS -p $(aws ecr get-login-password --region $ECR_REGION) AWS $ECR_ACCOUNT_ID.dkr.ecr.$ECR_REGION.amazonaws.com
   build:
     commands:
       - echo Build started on `date`
