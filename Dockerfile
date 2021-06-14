@@ -1,10 +1,13 @@
-# Build based tips from:
+# build based on:
 # https://medium.com/@chemidy/create-the-smallest-and-secured-golang-docker-image-based-on-scratch-4752223b7324
+# date: 2021-06-14
 
 ################################
 # STEP 1 build executable binary
 ################################
-FROM golang:1.16.3-alpine3.13 AS builder
+FROM golang:1.16.4-alpine3.13 AS builder
+
+EXPOSE 8080
 
 # Install git, zoneinfo, and SSL certs
 RUN apk update && apk add --no-cache git ca-certificates tzdata
@@ -22,9 +25,6 @@ RUN go mod init
 # ensures go.mod file matches source code in the module
 RUN go mod tidy
 
-# Using go get
-#RUN go get -d -v
-
 # Disable crosscompiling
 ENV CGO_ENABLED=0
 
@@ -32,12 +32,15 @@ ENV CGO_ENABLED=0
 ENV GOOS=linux
 
 # Build the binary - remove debug info and compile only for linux target
-RUN go build  -ldflags '-w -s' -a -installsuffix cgo -o /go/bin/app .
+RUN go build -ldflags '-w -s' -a -installsuffix cgo -o /go/bin/app .
 
 ############################
 # STEP 2 build a small image
 ############################
 FROM scratch
+
+LABEL maintainer="Gary A. Stafford <gary.a.stafford@gmail.com>"
+ENV REFRESHED_AT 2021-06-14
 
 # Import the user and group files from the builder
 COPY --from=builder /etc/passwd /etc/passwd
