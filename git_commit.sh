@@ -15,6 +15,8 @@ pushd $projectRoot || exit
 for project in "${projects[@]}"
 do
   pushd "$project" || exit
+    gofmt main.go
+    
     git add -A
     git commit --gpg-sign=DCD0DCF7AE909D61 -m "$commitMessage"
     git push
