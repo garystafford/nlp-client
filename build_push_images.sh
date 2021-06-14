@@ -8,7 +8,7 @@
 
 readonly projectRoot="/Users/garystafford/Documents/projects"
 readonly -a projects=(nlp-client rake-app prose-app lang-app dynamo-app)
-readonly tag=1.2.0
+readonly tag=1.2.1
 
 pushd $projectRoot || exit
 
