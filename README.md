@@ -1,5 +1,8 @@
 # Go Microservice: NLP Client
 
+![GitHub Actions](https://github.com/garystafford/nlp-client/actions/workflows/main.yml/badge.svg)
+
+
 Go-based microservice, part of a set of (5) microservices for the application used in the blog
 post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80)
 . Please read the post for complete instructions on how to use the files in this repository.
