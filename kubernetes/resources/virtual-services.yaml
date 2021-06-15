@@ -9,11 +9,11 @@ spec:
   gateways:
     - nlp-app-gateway
   http:
-  - match:
-    - uri:
-        prefix: /
-    route:
-    - destination:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
             host: nlp-client.nlp-app.svc.cluster.local
             subset: v1
             port:
