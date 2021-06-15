@@ -2,7 +2,7 @@
 // site: https://programmaticponderings.com
 // license: MIT License
 // purpose: NLP microservices: nlp-client
-// modified: 2021-06-13
+// modified: 2021-06-15
 
 package main
 
