@@ -1,0 +1,84 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: nlp-client
+  namespace: nlp-app
+spec:
+  hosts:
+    - { { your_hostname } }
+  gateways:
+    - nlp-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+            host: nlp-client.nlp-app.svc.cluster.local
+            subset: v1
+            port:
+              number: 8080
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: prose-app
+  namespace: nlp-app
+spec:
+  hosts:
+    - prose-app.nlp-app.svc.cluster.local
+  http:
+    - route:
+        - destination:
+            host: prose-app.nlp-app.svc.cluster.local
+            subset: v1
+            port:
+              number: 8080
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: rake-app
+  namespace: nlp-app
+spec:
+  hosts:
+    - rake-app.nlp-app.svc.cluster.local
+  http:
+    - route:
+        - destination:
+            host: rake-app.nlp-app.svc.cluster.local
+            subset: v1
+            port:
+              number: 8080
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: lang-app
+  namespace: nlp-app
+spec:
+  hosts:
+    - lang-app.nlp-app.svc.cluster.local
+  http:
+    - route:
+        - destination:
+            host: lang-app.nlp-app.svc.cluster.local
+            subset: v1
+            port:
+              number: 8080
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: dynamo-app
+  namespace: nlp-app
+spec:
+  hosts:
+    - dynamo-app.nlp-app.svc.cluster.local
+  http:
+    - route:
+        - destination:
+            host: dynamo-app.nlp-app.svc.cluster.local
+            subset: v1
+            port:
+              number: 8080

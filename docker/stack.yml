@@ -3,7 +3,7 @@ version: '3.9'
 
 services:
   nlp-client:
-    image: garystafford/nlp-client:1.1.0
+    image: garystafford/nlp-client:1.2.1
     networks:
       - nlp-demo
     ports:
@@ -19,28 +19,28 @@ services:
       - DYNAMO_ENDPOINT
       - API_KEY
   rake-app:
-    image: garystafford/rake-app:1.1.0
+    image: garystafford/rake-app:1.2.1
     networks:
       - nlp-demo
     environment:
       - RAKE_PORT
       - API_KEY
   prose-app:
-    image: garystafford/prose-app:1.1.0
+    image: garystafford/prose-app:1.2.1
     networks:
       - nlp-demo
     environment:
       - PROSE_PORT
       - API_KEY
   lang-app:
-    image: garystafford/lang-app:1.1.0
+    image: garystafford/lang-app:1.2.1
     networks:
       - nlp-demo
     environment:
       - LANG_PORT
       - API_KEY
   dynamo-app:
-    image: garystafford/dynamo-app:1.1.0
+    image: garystafford/dynamo-app:1.2.1
     networks:
       - nlp-demo
     environment:

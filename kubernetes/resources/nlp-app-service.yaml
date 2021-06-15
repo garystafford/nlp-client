@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nlp-client
+  namespace: nlp-app
+  labels:
+    app: nlp-client
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: nlp-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prose-app
+  namespace: nlp-app
+  labels:
+    app: prose-app
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: prose-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rake-app
+  namespace: nlp-app
+  labels:
+    app: rake-app
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: rake-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lang-app
+  namespace: nlp-app
+  labels:
+    app: lang-app
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: lang-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dynamo-app
+  namespace: nlp-app
+  labels:
+    app: dynamo-app
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: dynamo-app

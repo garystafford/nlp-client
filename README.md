@@ -14,6 +14,12 @@ post for complete instructions on how to use the files in this repository.
 
 ![Architecture](diagram/nlp_diagram.png)
 
+## Kiali Graph
+
+Application as seen in Amazon EKS with Istio service mesh. Kubernetes resources included in project.
+
+![Kiali](diagram/kiali.png)
+
 ## Routes
 
 The follow routes are available though the NLP Client.
@@ -77,8 +83,8 @@ The follow routes are available though the NLP Client.
 
 ```shell
 git tag v1.1.0 && git push origin v1.1.0
-docker build -t garystafford/nlp-client:1.1.0 . --no-cache
-docker push garystafford/nlp-client:1.1.0
+docker build -t garystafford/nlp-client:1.2.1 . --no-cache
+docker push garystafford/nlp-client:1.2.1
 ```
 
 ## Run Services Locally
@@ -145,8 +151,8 @@ aws ecr get-login-password \
     --username AWS \
     --password-stdin ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com
 
-docker build -t ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.1.0 . --no-cache
-docker push ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.1.0
+docker build -t ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.2.1 . --no-cache
+docker push ${ISV_ACCOUNT}.dkr.ecr.${ISV_ECR_REGION}.amazonaws.com/rake-app:1.2.1
 
 aws ecr get-login-password \
     --region ${CUSTOMER_ECR_REGION} \
@@ -154,17 +160,17 @@ aws ecr get-login-password \
     --username AWS \
     --password-stdin ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com
 
-docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/nlp-client:1.1.0 . --no-cache
-docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/nlp-client:1.1.0
+docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/nlp-client:1.2.1 . --no-cache
+docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/nlp-client:1.2.1
 
-docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/prose-app:1.1.0 . --no-cache
-docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/prose-app:1.1.0
+docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/prose-app:1.2.1 . --no-cache
+docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/prose-app:1.2.1
 
-docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/lang-app:1.1.0 . --no-cache
-docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/lang-app:1.1.0
+docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/lang-app:1.2.1 . --no-cache
+docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/lang-app:1.2.1
 
-docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/dynamo-app:1.1.0 . --no-cache
-docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/dynamo-app:1.1.0
+docker build -t ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/dynamo-app:1.2.1 . --no-cache
+docker push ${CUSTOMER_ACCOUNT}.dkr.ecr.${CUSTOMER_ECR_REGION}.amazonaws.com/dynamo-app:1.2.1
 
 # display images
 docker image ls --filter=reference='*amazonaws.com/*'
@@ -209,9 +215,9 @@ Sample output from Docker Swarm stack deployment.
 ```text
 > docker container ls
 CONTAINER ID   IMAGE                           COMMAND         CREATED          STATUS          PORTS                    NAMES
-3534e9ea38dd   garystafford/prose-app:1.1.0    "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_prose-app.1.rsehzmd5j3eylt6a6h76lwdwx
-6f9affbbc369   garystafford/rake-app:1.1.0     "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_rake-app.1.fwggsue67gc0f0mri5av7z1y6
-215237a35523   garystafford/lang-app:1.1.0     "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_lang-app.1.a0mjdhp8f8lqjdx8wse36b6d3
-80cbf710d398   garystafford/nlp-client:1.1.0   "/go/bin/app"   18 minutes ago   Up 18 minutes   0.0.0.0:8080->8080/tcp   nlp_nlp-client.1.itupgd2tsuua0427yqv7cdhjk
-0ccce2965bfd   garystafford/dynamo-app:1.1.0   "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_dynamo-app.1.mb2pwkdtb3yn64al50bskgtwh
+3534e9ea38dd   garystafford/prose-app:1.2.1    "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_prose-app.1.rsehzmd5j3eylt6a6h76lwdwx
+6f9affbbc369   garystafford/rake-app:1.2.1     "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_rake-app.1.fwggsue67gc0f0mri5av7z1y6
+215237a35523   garystafford/lang-app:1.2.1     "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_lang-app.1.a0mjdhp8f8lqjdx8wse36b6d3
+80cbf710d398   garystafford/nlp-client:1.2.1   "/go/bin/app"   18 minutes ago   Up 18 minutes   0.0.0.0:8080->8080/tcp   nlp_nlp-client.1.itupgd2tsuua0427yqv7cdhjk
+0ccce2965bfd   garystafford/dynamo-app:1.2.1   "/go/bin/app"   18 minutes ago   Up 18 minutes                            nlp_dynamo-app.1.mb2pwkdtb3yn64al50bskgtwh
 ```

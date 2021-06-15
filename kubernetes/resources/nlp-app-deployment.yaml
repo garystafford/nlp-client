@@ -1,0 +1,181 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nlp-client
+  namespace: nlp-app
+  labels:
+    app: nlp-client
+spec:
+  selector:
+    matchLabels:
+      app: nlp-client
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nlp-client
+        version: v1
+    spec:
+      serviceAccountName: nlp-client-serviceaccount
+      containers:
+        - image: docker.io/garystafford/nlp-client:1.2.1
+          imagePullPolicy: Always
+          name: nlp-client
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NLP_CLIENT_PORT
+              value: ":8080"
+            - name: RAKE_ENDPOINT
+              value: "http://rake-app.nlp-app.svc.cluster.local:8080"
+            - name: PROSE_ENDPOINT
+              value: "http://prose-app.nlp-app.svc.cluster.local:8080"
+            - name: LANG_ENDPOINT
+              value: "http://lang-app.nlp-app.svc.cluster.local:8080"
+            - name: DYNAMO_ENDPOINT
+              value: "http://dynamo-app.nlp-app.svc.cluster.local:8080"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nlp-app-secret
+                  key: api-key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prose-app
+  namespace: nlp-app
+  labels:
+    app: prose-app
+spec:
+  selector:
+    matchLabels:
+      app: prose-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: prose-app
+        version: v1
+    spec:
+      serviceAccountName: nlp-client-serviceaccount
+      containers:
+        - image: docker.io/garystafford/prose-app:1.2.1
+          imagePullPolicy: Always
+          name: prose-app
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PROSE_PORT
+              value: ":8080"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nlp-app-secret
+                  key: api-key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lang-app
+  namespace: nlp-app
+  labels:
+    app: lang-app
+spec:
+  selector:
+    matchLabels:
+      app: lang-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: lang-app
+        version: v1
+    spec:
+      serviceAccountName: nlp-client-serviceaccount
+      containers:
+        - image: docker.io/garystafford/lang-app:1.2.1
+          imagePullPolicy: Always
+          name: lang-app
+          ports:
+            - containerPort: 8080
+          env:
+            - name: LANG_PORT
+              value: ":8080"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nlp-app-secret
+                  key: api-key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rake-app
+  namespace: nlp-app
+  labels:
+    app: rake-app
+spec:
+  selector:
+    matchLabels:
+      app: rake-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: rake-app
+        version: v1
+    spec:
+      serviceAccountName: nlp-client-serviceaccount
+      containers:
+        - image: docker.io/garystafford/rake-app:1.2.1
+          imagePullPolicy: Always
+          name: rake-app
+          ports:
+            - containerPort: 8080
+          env:
+            - name: RAKE_PORT
+              value: ":8080"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nlp-app-secret
+                  key: api-key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynamo-app
+  namespace: nlp-app
+  labels:
+    app: dynamo-app
+spec:
+  selector:
+    matchLabels:
+      app: dynamo-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: dynamo-app
+        version: v1
+    spec:
+      serviceAccountName: dynamo-app-serviceaccount
+      securityContext: # temp bug fix for https://github.com/vmware-tanzu/velero-plugin-for-aws/issues/17
+        fsGroup: 65534
+      containers:
+        - image: docker.io/garystafford/dynamo-app:1.2.1
+          imagePullPolicy: Always
+          name: dynamo-app
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DYNAMO_PORT
+              value: ":8080"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: nlp-app-secret
+                  key: api-key
+            - name: AWS_REGION # required by DynamoDB session
+              value: "us-east-1"
