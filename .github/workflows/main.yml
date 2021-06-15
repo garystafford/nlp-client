@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: garystafford/nlp-client:$RELEASE_VERSION
+          tags: garystafford/nlp-client:${{ env.RELEASE_VERSION }}
