@@ -1,8 +1,8 @@
 # Go Microservice: NLP Client
 
 Go-based microservice, part of a set of (5) microservices for the application used in the blog
-post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80). Please read the
-post for complete instructions on how to use the files in this repository.
+post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80)
+. Please read the post for complete instructions on how to use the files in this repository.
 
 1. [nlp-client](https://github.com/garystafford/nlp-client)
 2. [dynamo-app](https://github.com/garystafford/dynamo-app)
@@ -10,13 +10,23 @@ post for complete instructions on how to use the files in this repository.
 4. [lang-app](https://github.com/garystafford/lang-app)
 5. [rake-app](https://github.com/garystafford/rake-app)
 
-## Architecture
+## ECS Architecture
+
+Diagram of services deployed to Amazon ECS.
 
 ![Architecture](diagram/nlp_diagram.png)
 
-## Kiali Graph
+## Kubernetes Architecture
 
-Application as seen in Amazon EKS with Istio service mesh. Kubernetes resources included in project.
+### Argo CD Deployment Graph
+
+View of services deployed to Amazon EKS via Argo CD.
+
+![Kiali](diagram/argocd.png)
+
+### Kiali Graph
+
+Application as seen in Amazon EKS with Istio service mesh. Kubernetes resource files included in project.
 
 ![Kiali](diagram/kiali.png)
 
