@@ -9,13 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set environment variable
-        run: |
-          echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
-          echo "REPOSITORY_NAME=$(echo '${{ github.repository }}')" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Test environment variable
-        run: |
-          echo ${{ env.RELEASE_VERSION }}
-          echo ${{ env.REPOSITORY_NAME }}
+        run: echo ${{ env.RELEASE_VERSION }}
       - name: Check out GitHub repo
         uses: actions/checkout@v2
       - name: Log in to Docker Hub
@@ -27,4 +23,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ env.REPOSITORY_NAME }}:${{ env.RELEASE_VERSION }}
+          tags: ${{ github.repository }}:${{ env.RELEASE_VERSION }}
