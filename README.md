@@ -115,7 +115,6 @@ export PROSE_ENDPOINT=http://localhost:${PROSE_PORT}
 export LANG_ENDPOINT=http://localhost:${LANG_PORT}
 export DYNAMO_ENDPOINT=http://localhost:${DYNAMO_PORT}
 export API_KEY=SuP3r5eCRetAutHK3y
-export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
 
 ## Run service locally
 
@@ -126,7 +125,12 @@ go run *.go
 
 ## Test the Local Service
 
+From a new terminal window.
+
 ```shell
+export API_KEY=SuP3r5eCRetAutHK3y
+export TEXT="The Nobel Prize is regarded as the most prestigious award in the World. Notable winners have included Marie Curie, Theodore Roosevelt, Albert Einstein, George Bernard Shaw, and Winston Churchill."
+
 curl -s -X GET \
     "http://localhost:8080/health" \
     -H "X-API-Key: ${API_KEY}" \
