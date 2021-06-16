@@ -3,7 +3,7 @@
 ![GitHub Actions](https://github.com/garystafford/nlp-client/actions/workflows/main.yml/badge.svg)
 
 
-Go-based microservice, part of a set of (5) microservices for the application used in the blog
+A Go-based microservice, part of a set of (5) microservices for the application used in the blog
 post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80). Please read the post for complete instructions on how to use the files in this repository.
 
 1. [nlp-client](https://github.com/garystafford/nlp-client)
@@ -12,7 +12,7 @@ post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Dep
 4. [lang-app](https://github.com/garystafford/lang-app)
 5. [rake-app](https://github.com/garystafford/rake-app)
 
-## ECS Architecture
+## Amazon ECS Architecture
 
 Diagram of services deployed to Amazon ECS.
 
