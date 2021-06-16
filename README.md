@@ -4,8 +4,7 @@
 
 
 Go-based microservice, part of a set of (5) microservices for the application used in the blog
-post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80)
-. Please read the post for complete instructions on how to use the files in this repository.
+post, [Cross-Account Amazon Elastic Container Registry (ECR) Access for ECS: Deploying containerized applications on Amazon ECS using cross-account elastic container registries](https://garystafford.medium.com/amazon-elastic-container-registry-ecr-cross-account-access-for-ecs-2f90fcb02c80). Please read the post for complete instructions on how to use the files in this repository.
 
 1. [nlp-client](https://github.com/garystafford/nlp-client)
 2. [dynamo-app](https://github.com/garystafford/dynamo-app)
@@ -92,14 +91,6 @@ The follow routes are available though the NLP Client.
 ]
 ```
 
-## Build and Push Docker Image to Docker Hub
-
-```shell
-git tag v1.1.0 && git push origin v1.1.0
-docker build -t garystafford/nlp-client:1.2.1 . --no-cache
-docker push garystafford/nlp-client:1.2.1
-```
-
 ## Run Services Locally
 
 Create [DynamoDB CloudFormation stack](https://github.com/garystafford/dynamo-app/blob/master/dynamodb-table.yml) from
@@ -131,7 +122,11 @@ export TEXT="The Nobel Prize is regarded as the most prestigious award in the Wo
 go mod init github.com/garystafford/nlp-client
 go mod tidy -v
 go run *.go
+```
 
+## Test the Local Service
+
+```shell
 curl -s -X GET \
     "http://localhost:8080/health" \
     -H "X-API-Key: ${API_KEY}" \
@@ -149,7 +144,7 @@ curl -s -X POST \
     -d "{\"text\": \"${TEXT}\"}"
 ```
 
-## Build Required Images for ECR
+## Build Images for Amazon Elastic Container Registry (ECR)
 
 ```bash
 # change me
