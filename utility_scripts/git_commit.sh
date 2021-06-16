@@ -18,7 +18,7 @@ do
     gofmt main.go
 
     git add -A
-    git commit --gpg-sign=DCD0DCF7AE909D61 -m "$commitMessage"
+    git commit -S -m "$commitMessage"
     git push
   popd || exit
 done
