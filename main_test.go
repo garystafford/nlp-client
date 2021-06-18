@@ -6,9 +6,42 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"sort"
 	"testing"
 )
+
+func TestGetEnvSet(t *testing.T) {
+	err := os.Setenv("API_KEY", "foo")
+	if err != nil {
+		t.Error(err)
+	}
+	if assert.Equal(t, getEnv("API_KEY", "bar"), "foo") {
+	}
+}
+
+func TestGetEnvNotSet(t *testing.T) {
+	err := os.Unsetenv("API_KEY")
+	if err != nil {
+		t.Error(err)
+	}
+	if assert.Equal(t, getEnv("API_KEY", "bar"), "bar") {
+	}
+}
+
+func TestGetError(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/error", nil)
+	w := httptest.NewRecorder()
+	c := e.NewContext(req, w)
+	res := w.Result()
+	err := res.Body.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	if assert.EqualError(t, getError(c), "code=500, message=Internal Server Error") {
+	}
+}
 
 func TestGetHealth(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
@@ -47,7 +80,7 @@ func TestGetHealth(t *testing.T) {
 	}
 }
 
-func TestGetError(t *testing.T) {
+func TestGetRoutes(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/routes", nil)
 	w := httptest.NewRecorder()
 	e.GET("/health", getHealth)
@@ -110,5 +143,16 @@ func TestGetError(t *testing.T) {
 	if assert.NoError(t, getRoutes(c)) {
 		assert.Equal(t, http.StatusOK, w.Code)
 		assert.Equal(t, &expectedStatus, &responseBody)
+	}
+}
+
+func TestGetHealthUpstreamRake(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/health/rake", nil)
+	w := httptest.NewRecorder()
+	c := e.NewContext(req, w)
+	res := w.Result()
+	res.Body.Close()
+
+	if assert.EqualError(t, getHealthUpstream(c), "code=405, message=Method Not Allowed") {
 	}
 }
