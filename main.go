@@ -50,13 +50,15 @@ func getRoutes(c echo.Context) error {
 }
 
 func getHealth(c echo.Context) error {
-	var response interface{}
-	err := json.Unmarshal([]byte(`{"status":"UP"}`), &response)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+	type HealthStatus struct {
+		Status string `json:"status,omitempty"`
 	}
-
-	return c.JSON(http.StatusOK, response)
+	healthStatus := HealthStatus{"Up"}
+	//_, err := json.Marshal(healthStatus)
+	//if err != nil {
+	//	e.Logger.Error(err)
+	//}
+	return c.JSON(http.StatusOK, healthStatus)
 }
 
 func getHealthUpstream(c echo.Context) error {
