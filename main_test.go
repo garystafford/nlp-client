@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"sort"
-	"strings"
 	"testing"
 )
 
@@ -37,7 +36,7 @@ func TestGetHealth(t *testing.T) {
 	expectedStatus := HealthStatus{"Up"}
 	var responseBody HealthStatus
 
-	err = json.Unmarshal([]byte(strings.Trim(string(data), "\n")), &responseBody)
+	err = json.Unmarshal(data, &responseBody)
 	if err != nil {
 		t.Error(err)
 	}
@@ -45,35 +44,6 @@ func TestGetHealth(t *testing.T) {
 	if assert.NoError(t, getHealth(c)) {
 		assert.Equal(t, http.StatusOK, w.Code)
 		assert.Equal(t, &expectedStatus, &responseBody)
-	}
-}
-
-func _TestGetHealthUsingStrings(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/health", nil)
-	w := httptest.NewRecorder()
-	c := e.NewContext(req, w)
-	err := getHealth(c)
-	if err != nil {
-		t.Error(err)
-	}
-	res := w.Result()
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			t.Error(err)
-		}
-	}(res.Body)
-	data, err := io.ReadAll(res.Body)
-	if err != nil {
-		t.Error(err)
-	}
-
-	expected := `{"status":"Up"}`
-	actual := strings.Trim(string(data), "\n")
-
-	if assert.NoError(t, getHealth(c)) {
-		assert.Equal(t, http.StatusOK, w.Code)
-		assert.Equal(t, &expected, &actual)
 	}
 }
 
