@@ -8,7 +8,7 @@
 
 readonly projectRoot="/Users/garystafford/Documents/projects"
 readonly -a projects=(nlp-client rake-app prose-app lang-app dynamo-app)
-readonly commitMessage="Updating logging and main/run functions"
+readonly commitMessage="Adding tests and updating health and routes Handlers"
 
 pushd $projectRoot || exit
 

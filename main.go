@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	logLevel   = getEnv("LOG_LEVEL", "1") // INFO
+	logLevel   = getEnv("LOG_LEVEL", "1") // DEBUG
 	serverPort = getEnv("NLP_CLIENT_PORT", ":8080")
 	urlRake    = getEnv("RAKE_ENDPOINT", "http://localhost:8080")
 	urlProse   = getEnv("PROSE_ENDPOINT", "http://localhost:8080")
@@ -40,23 +40,13 @@ func getEnv(key, fallback string) string {
 }
 
 func getRoutes(c echo.Context) error {
-	//response, err := json.MarshalIndent(e.Routes(), "", "  ")
-	//if err != nil {
-	//	return echo.NewHTTPError(http.StatusInternalServerError, err)
-	//}
-
 	return c.JSON(http.StatusOK, e.Routes())
 }
 
 func getHealth(c echo.Context) error {
-	type HealthStatus struct {
-		Status string `json:"status,omitempty"`
-	}
-	healthStatus := HealthStatus{"Up"}
-	//_, err := json.Marshal(healthStatus)
-	//if err != nil {
-	//	e.Logger.Error(err)
-	//}
+	healthStatus := struct {
+		Status string `json:"status"`
+	}{"Up"}
 	return c.JSON(http.StatusOK, healthStatus)
 }
 
