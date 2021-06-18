@@ -119,6 +119,9 @@ export API_KEY=SuP3r5eCRetAutHK3y
 ## Run service locally
 
 go mod init github.com/garystafford/nlp-client
+
+go test -v
+
 go mod tidy -v
 go run *.go
 ```

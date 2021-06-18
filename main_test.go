@@ -39,7 +39,8 @@ func TestGetError(t *testing.T) {
 		t.Error(err)
 	}
 
-	if assert.EqualError(t, getError(c), "code=500, message=Internal Server Error") {
+	expected := `code=500, message=Internal Server Error`
+	if assert.EqualError(t, getError(c), expected) {
 	}
 }
 
@@ -153,6 +154,19 @@ func TestGetHealthUpstreamRake(t *testing.T) {
 	res := w.Result()
 	res.Body.Close()
 
-	if assert.EqualError(t, getHealthUpstream(c), "code=405, message=Method Not Allowed") {
+	expected := `code=405, message=Method Not Allowed`
+	if assert.EqualError(t, getHealthUpstream(c), expected) {
+	}
+}
+
+func TestGetKeywords(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/keywords", nil)
+	w := httptest.NewRecorder()
+	c := e.NewContext(req, w)
+	res := w.Result()
+	res.Body.Close()
+
+	expected := `code=500, message=Post "http://localhost:8081/keywords": dial tcp [::1]:8081: connect: connection refused`
+	if assert.EqualError(t, getKeywords(c), expected) {
 	}
 }
