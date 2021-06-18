@@ -7,7 +7,6 @@
 package main
 
 import (
-	"encoding/json"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -41,12 +40,12 @@ func getEnv(key, fallback string) string {
 }
 
 func getRoutes(c echo.Context) error {
-	response, err := json.MarshalIndent(e.Routes(), "", "  ")
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
-	}
+	//response, err := json.MarshalIndent(e.Routes(), "", "  ")
+	//if err != nil {
+	//	return echo.NewHTTPError(http.StatusInternalServerError, err)
+	//}
 
-	return c.JSONBlob(http.StatusOK, response)
+	return c.JSON(http.StatusOK, e.Routes())
 }
 
 func getHealth(c echo.Context) error {
@@ -160,8 +159,7 @@ func run() error {
 	e.Use(middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
 		KeyLookup: "header:X-API-Key",
 		Skipper: func(c echo.Context) bool {
-			if strings.HasPrefix(c.Request().RequestURI, "/health") ||
-				strings.HasPrefix(c.Request().RequestURI, "/routes") {
+			if strings.HasPrefix(c.Request().RequestURI, "/health") {
 				return true
 			}
 			return false

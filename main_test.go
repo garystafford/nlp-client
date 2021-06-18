@@ -4,24 +4,12 @@ import (
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"sort"
 	"strings"
 	"testing"
 )
-
-const (
-	API_KEY = "ChangeMe"
-)
-
-type Route struct {
-	Method string `json:"method"`
-	Path   string `json:"path"`
-	Name   string `json:"name"`
-}
-
-type Routes []Route
 
 func TestHealthUsingUnmarshal(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
@@ -38,7 +26,7 @@ func TestHealthUsingUnmarshal(t *testing.T) {
 			t.Error(err)
 		}
 	}(res.Body)
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		t.Error(err)
 	}
@@ -75,7 +63,7 @@ func TestHealthUsingStrings(t *testing.T) {
 			t.Error(err)
 		}
 	}(res.Body)
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		t.Error(err)
 	}
@@ -91,12 +79,19 @@ func TestHealthUsingStrings(t *testing.T) {
 
 func TestGetError(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/routes", nil)
-	req.Header.Set("X-API-Key", API_KEY)
-	req.Header.Set("Content-Type", "application/json")
-
 	w := httptest.NewRecorder()
+	e.GET("/health", getHealth)
+	e.GET("/health/:app", getHealthUpstream)
+	e.GET("/error", getError)
+	e.GET("/routes", getRoutes)
+	e.POST("/keywords", getKeywords)
+	e.POST("/tokens", getTokens)
+	e.POST("/entities", getEntities)
+	e.POST("/sentences", getSentences)
+	e.POST("/language", getLanguage)
+	e.POST("/record", putDynamo)
 	c := e.NewContext(req, w)
-	err := getHealth(c)
+	err := getRoutes(c)
 	if err != nil {
 		t.Error(err)
 	}
@@ -107,32 +102,43 @@ func TestGetError(t *testing.T) {
 			t.Error(err)
 		}
 	}(res.Body)
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		t.Error(err)
 	}
 
-
-	//type Routes []struct {
-	//	Method string `json:"method"`
-	//	Path   string `json:"path"`
-	//	Name   string `json:"name"`
-	//}
-
-	expectedStatus := Routes{{"GET", "/health", "main.getHealth"}}
-	t.Log(expectedStatus[0].Name)
-	var responseBody Routes
-
-	//err = json.Unmarshal(data, &responseBody)
-	jsonBody := []byte(strings.Trim(string(data), "\n"))
-	t.Log(jsonBody)
-	err = json.Unmarshal(jsonBody, &responseBody)
-	if err != nil {
-		t.Errorf("json.Unmarshal: %v", err)
+	type Route struct {
+		Method string `json:"method"`
+		Path   string `json:"path"`
+		Name   string `json:"name"`
 	}
+
+	prefix := "github.com/garystafford/nlp-client"
+	expectedStatus := []Route{
+		{"GET", "/health", prefix + ".getHealth"},
+		{"GET", "/health/:app", prefix + ".getHealthUpstream"},
+		{"GET", "/error", prefix + ".getError"},
+		{"GET", "/routes", prefix + ".getRoutes"},
+		{"POST", "/keywords", prefix + ".getKeywords"},
+		{"POST", "/tokens", prefix + ".getTokens"},
+		{"POST", "/entities", prefix + ".getEntities"},
+		{"POST", "/sentences", prefix + ".getSentences"},
+		{"POST", "/language", prefix + ".getLanguage"},
+		{"POST", "/record", prefix + ".putDynamo"},
+	}
+	var responseBody []Route
+
+	err = json.Unmarshal(data, &responseBody)
+	if err != nil {
+		t.Error(err)
+	}
+
+	// sort both arrays of Route structs so they are in identical order
+	sort.Slice(expectedStatus, func(i, j int) bool { return expectedStatus[i].Path < expectedStatus[j].Path })
+	sort.Slice(responseBody, func(i, j int) bool { return responseBody[i].Path < responseBody[j].Path })
 
 	if assert.NoError(t, getRoutes(c)) {
 		assert.Equal(t, http.StatusOK, w.Code)
-		assert.Equal(t, &expectedStatus[0].Name, &responseBody)
+		assert.Equal(t, &expectedStatus, &responseBody)
 	}
 }
