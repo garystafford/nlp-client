@@ -15,7 +15,7 @@ pushd $projectRoot || exit
 for project in "${projects[@]}"
 do
   pushd "$project" || exit
-    gofmt main.go
+    gofmt *.go
 
     git add -A
     git commit -S -m "$commitMessage"
