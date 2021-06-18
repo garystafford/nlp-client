@@ -15,6 +15,14 @@ const (
 	API_KEY = "ChangeMe"
 )
 
+type Route struct {
+	Method string `json:"method"`
+	Path   string `json:"path"`
+	Name   string `json:"name"`
+}
+
+type Routes []Route
+
 func TestHealthUsingUnmarshal(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
 	w := httptest.NewRecorder()
@@ -84,11 +92,11 @@ func TestHealthUsingStrings(t *testing.T) {
 func TestGetError(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/routes", nil)
 	req.Header.Set("X-API-Key", API_KEY)
+	req.Header.Set("Content-Type", "application/json")
 
 	w := httptest.NewRecorder()
-	w.Header()
 	c := e.NewContext(req, w)
-	err := getRoutes(c)
+	err := getHealth(c)
 	if err != nil {
 		t.Error(err)
 	}
@@ -104,32 +112,27 @@ func TestGetError(t *testing.T) {
 		t.Error(err)
 	}
 
-	//type Route struct {
+
+	//type Routes []struct {
 	//	Method string `json:"method"`
 	//	Path   string `json:"path"`
 	//	Name   string `json:"name"`
 	//}
-	//
-	//type Routes []Route
-
-	type Routes []struct {
-		Method string `json:"method"`
-		Path   string `json:"path"`
-		Name   string `json:"name"`
-	}
 
 	expectedStatus := Routes{{"GET", "/health", "main.getHealth"}}
 	t.Log(expectedStatus[0].Name)
 	var responseBody Routes
 
 	//err = json.Unmarshal(data, &responseBody)
-	err = json.Unmarshal([]byte(strings.Trim(string(data), "\n")), &responseBody)
+	jsonBody := []byte(strings.Trim(string(data), "\n"))
+	t.Log(jsonBody)
+	err = json.Unmarshal(jsonBody, &responseBody)
 	if err != nil {
-		t.Error(err)
+		t.Errorf("json.Unmarshal: %v", err)
 	}
 
 	if assert.NoError(t, getRoutes(c)) {
 		assert.Equal(t, http.StatusOK, w.Code)
-		assert.Equal(t, &expectedStatus, &responseBody)
+		assert.Equal(t, &expectedStatus[0].Name, &responseBody)
 	}
 }

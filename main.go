@@ -160,7 +160,8 @@ func run() error {
 	e.Use(middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
 		KeyLookup: "header:X-API-Key",
 		Skipper: func(c echo.Context) bool {
-			if strings.HasPrefix(c.Request().RequestURI, "/health") {
+			if strings.HasPrefix(c.Request().RequestURI, "/health") ||
+				strings.HasPrefix(c.Request().RequestURI, "/routes") {
 				return true
 			}
 			return false
