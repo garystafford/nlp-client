@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-func TestHealthUsingUnmarshal(t *testing.T) {
+func TestGetHealth(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
 	w := httptest.NewRecorder()
 	c := e.NewContext(req, w)
@@ -48,7 +48,7 @@ func TestHealthUsingUnmarshal(t *testing.T) {
 	}
 }
 
-func TestHealthUsingStrings(t *testing.T) {
+func _TestGetHealthUsingStrings(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/health", nil)
 	w := httptest.NewRecorder()
 	c := e.NewContext(req, w)
