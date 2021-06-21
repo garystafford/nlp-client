@@ -2,7 +2,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: nlp-client
-  namespace: nlp-app
 spec:
   host: nlp-client.nlp-app.svc.cluster.local
   subsets:
@@ -14,7 +13,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: rake-app
-  namespace: nlp-app
 spec:
   host: rake-app.nlp-app.svc.cluster.local
   subsets:
@@ -26,7 +24,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: prose-app
-  namespace: nlp-app
 spec:
   host: prose-app.nlp-app.svc.cluster.local
   subsets:
@@ -38,7 +35,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: lang-app
-  namespace: nlp-app
 spec:
   host: lang-app.nlp-app.svc.cluster.local
   subsets:
@@ -50,7 +46,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: dynamo-app
-  namespace: nlp-app
 spec:
   host: dynamo-app.nlp-app.svc.cluster.local
   subsets:

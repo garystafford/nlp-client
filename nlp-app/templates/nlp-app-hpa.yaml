@@ -1,0 +1,124 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nlp-client
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
+          type: Utilization
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.cpu.averageUtilization }}
+          type: Utilization
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nlp-client
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: prose-app
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
+          type: Utilization
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.cpu.averageUtilization }}
+          type: Utilization
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: prose-app
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lang-app
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
+          type: Utilization
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.cpu.averageUtilization }}
+          type: Utilization
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lang-app
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rake-app
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
+          type: Utilization
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.cpu.averageUtilization }}
+          type: Utilization
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: rake-app
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dynamo-app
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
+          type: Utilization
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: {{ .Values.autoscaling.metrics.cpu.averageUtilization }}
+          type: Utilization
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: dynamo-app

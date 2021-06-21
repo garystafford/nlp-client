@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KubernetesSettings">
+    <option name="helmParameters">
+      <HelmParameters>
+        <option name="chartPath" value="$PROJECT_DIR$/nlp-app-chart" />
+        <option name="valuesFiles">
+          <option value="values.yaml" />
+        </option>
+      </HelmParameters>
+      <HelmParameters>
+        <option name="chartPath" value="$PROJECT_DIR$/nlp-app" />
+        <option name="valuesFiles">
+          <option value="values.yaml" />
+        </option>
+      </HelmParameters>
+    </option>
+  </component>
+</project>

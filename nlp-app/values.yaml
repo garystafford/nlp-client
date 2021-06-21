@@ -1,0 +1,28 @@
+image:
+  repository: docker.io/garystafford
+  pullPolicy: IfNotPresent
+
+  tag:
+    NLPClint: 1.2.1
+    ProseApp: 1.2.1
+    RakeApp: 1.2.1
+    LangApp: 1.2.1
+    DynamoApp: 1.2.1
+
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 4
+
+  metrics:
+    memory:
+      averageUtilization: 75
+    cpu:
+      averageUtilization: 75
+
+secrets:
+  data:
+    APIKey: RHFpU3lDekpnVVk5a2J4V2lGMVFBN05Z
+
+istio:
+  hosts:
+    api: nlp.example-api.com

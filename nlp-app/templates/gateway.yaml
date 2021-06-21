@@ -2,7 +2,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: nlp-app-gateway
-  namespace: nlp-app
 spec:
   selector:
     istio: ingressgateway
@@ -12,4 +11,6 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - { { your_hostname } }
+        {{- range .Values.istio.hosts }}
+        - {{ . }}
+        {{- end }}

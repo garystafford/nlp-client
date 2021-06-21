@@ -2,10 +2,9 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: nlp-client
-  namespace: nlp-app
 spec:
   hosts:
-    - { { your_hostname } }
+    - {{ .Values.istio.hosts.api }}
   gateways:
     - nlp-app-gateway
   http:
@@ -23,7 +22,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: prose-app
-  namespace: nlp-app
 spec:
   hosts:
     - prose-app.nlp-app.svc.cluster.local
@@ -39,7 +37,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: rake-app
-  namespace: nlp-app
 spec:
   hosts:
     - rake-app.nlp-app.svc.cluster.local
@@ -55,7 +52,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: lang-app
-  namespace: nlp-app
 spec:
   hosts:
     - lang-app.nlp-app.svc.cluster.local
@@ -71,7 +67,6 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: dynamo-app
-  namespace: nlp-app
 spec:
   hosts:
     - dynamo-app.nlp-app.svc.cluster.local
