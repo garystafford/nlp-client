@@ -17,7 +17,6 @@ spec:
         app: nlp-client
         version: v1
     spec:
-      serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: nlp-client
           image: {{ printf "%s/nlp-client:%s" .Values.image.repository .Values.image.tag.NLPClient }}
@@ -73,7 +72,6 @@ spec:
         app: prose-app
         version: v1
     spec:
-      serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: prose-app
           image: {{ printf "%s/prose-app:%s" .Values.image.repository .Values.image.tag.ProseApp }}
@@ -121,7 +119,6 @@ spec:
         app: lang-app
         version: v1
     spec:
-      serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: lang-app
           image: {{ printf "%s/lang-app:%s" .Values.image.repository .Values.image.tag.LangApp }}
@@ -169,7 +166,6 @@ spec:
         app: rake-app
         version: v1
     spec:
-      serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: rake-app
           image: {{ printf "%s/rake-app:%s" .Values.image.repository .Values.image.tag.RakeApp }}

@@ -21,8 +21,8 @@ autoscaling:
 
 secrets:
   data:
-    APIKey: ChangeAndBase64EncodeMe
+    APIKey: RHFpU3lDekpnVVk5a2J4V2lGMVFBN05Z
 
 istio:
   hosts:
-    api: nlp.example-api.com
+    api: nlp-eks-istio.example-api.com
