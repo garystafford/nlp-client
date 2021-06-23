@@ -11,6 +11,8 @@ spec:
   replicas: 2
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: nlp-client
         version: v1
@@ -65,6 +67,8 @@ spec:
   replicas: 2
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: prose-app
         version: v1
@@ -111,6 +115,8 @@ spec:
   replicas: 2
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: lang-app
         version: v1
@@ -157,6 +163,8 @@ spec:
   replicas: 2
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: rake-app
         version: v1
@@ -203,6 +211,8 @@ spec:
   replicas: 2
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: dynamo-app
         version: v1

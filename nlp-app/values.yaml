@@ -25,4 +25,4 @@ secrets:
 
 istio:
   hosts:
-    api: nlp-eks-istio.example-api.com
+    api: nlp.example-api.com
