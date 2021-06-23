@@ -7,8 +7,7 @@ This Helm 3 chart will install all Kubernetes resources to the `nlp-app` namespa
 helm install nlp-app ./nlp-app --namespace nlp-app --debug --dry-run
 
 # apply chart resources
-helm install nlp-app ./nlp-app --namespace nlp-app | kubectl apply -f
-helm upgrade nlp-app ./nlp-app --namespace nlp-app --create-namespace
+helm install nlp-app ./nlp-app --namespace nlp-app --create-namespace
 ```
 
 Resources included in Helm Chart:
