@@ -18,8 +18,7 @@ spec:
       serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: nlp-client
-          image:
-            {{ .Values.image.repository }}/nlp-client:{{ .Values.image.tag.NLPClient }}
+          image: {{ printf "%s/nlp-client:%s" .Values.image.repository .Values.image.tag.NLPClient }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
@@ -73,8 +72,7 @@ spec:
       serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: prose-app
-          image:
-            {{ .Values.image.repository }}/prose-app:{{ .Values.image.tag.ProseApp }}
+          image: {{ printf "%s/prose-app:%s" .Values.image.repository .Values.image.tag.ProseApp }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
@@ -120,8 +118,7 @@ spec:
       serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: lang-app
-          image:
-            {{ .Values.image.repository }}/lang-app:{{ .Values.image.tag.LangApp }}
+          image: {{ printf "%s/lang-app:%s" .Values.image.repository .Values.image.tag.LangApp }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
@@ -167,8 +164,7 @@ spec:
       serviceAccountName: nlp-client-serviceaccount
       containers:
         - name: rake-app
-          image:
-            {{ .Values.image.repository }}/rake-app:{{ .Values.image.tag.RakeApp }}
+          image: {{ printf "%s/rake-app:%s" .Values.image.repository .Values.image.tag.RakeApp }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
@@ -216,8 +212,7 @@ spec:
         fsGroup: 65534
       containers:
         - name: dynamo-app
-          image:
-            {{ .Values.image.repository }}/dynamo-app:{{ .Values.image.tag.DynamoApp }}
+          image: {{ printf "%s/dynamo-app:%s" .Values.image.repository .Values.image.tag.DynamoApp }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080

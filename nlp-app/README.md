@@ -8,6 +8,7 @@ helm install nlp-app ./nlp-app --namespace nlp-app --debug --dry-run
 
 # apply chart resources
 helm install nlp-app ./nlp-app --namespace nlp-app | kubectl apply -f
+helm upgrade nlp-app ./nlp-app --namespace nlp-app --create-namespace
 ```
 
 Resources included in Helm Chart:

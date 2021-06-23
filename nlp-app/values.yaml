@@ -3,7 +3,7 @@ image:
   pullPolicy: IfNotPresent
 
   tag:
-    NLPClint: 1.2.1
+    NLPClient: 1.2.1
     ProseApp: 1.2.1
     RakeApp: 1.2.1
     LangApp: 1.2.1
@@ -25,4 +25,4 @@ secrets:
 
 istio:
   hosts:
-    api: nlp.example-api.com
+    api: nlp-eks-istio.example-api.com
