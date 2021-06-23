@@ -6,12 +6,12 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
-          type: Utilization
+{{/*    - type: Resource*/}}
+{{/*      resource:*/}}
+{{/*        name: memory*/}}
+{{/*        target:*/}}
+{{/*          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}*/}}
+{{/*          type: Utilization*/}}
     - type: Resource
       resource:
         name: cpu
@@ -31,12 +31,12 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
-          type: Utilization
+{{/*    - type: Resource*/}}
+{{/*      resource:*/}}
+{{/*        name: memory*/}}
+{{/*        target:*/}}
+{{/*          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}*/}}
+{{/*          type: Utilization*/}}
     - type: Resource
       resource:
         name: cpu
@@ -56,12 +56,12 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
-          type: Utilization
+{{/*    - type: Resource*/}}
+{{/*      resource:*/}}
+{{/*        name: memory*/}}
+{{/*        target:*/}}
+{{/*          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}*/}}
+{{/*          type: Utilization*/}}
     - type: Resource
       resource:
         name: cpu
@@ -81,12 +81,12 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
-          type: Utilization
+{{/*    - type: Resource*/}}
+{{/*      resource:*/}}
+{{/*        name: memory*/}}
+{{/*        target:*/}}
+{{/*          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}*/}}
+{{/*          type: Utilization*/}}
     - type: Resource
       resource:
         name: cpu
@@ -106,12 +106,12 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}
-          type: Utilization
+{{/*    - type: Resource*/}}
+{{/*      resource:*/}}
+{{/*        name: memory*/}}
+{{/*        target:*/}}
+{{/*          averageUtilization: {{ .Values.autoscaling.metrics.memory.averageUtilization }}*/}}
+{{/*          type: Utilization*/}}
     - type: Resource
       resource:
         name: cpu
