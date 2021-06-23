@@ -21,7 +21,7 @@ autoscaling:
 
 secrets:
   data:
-    APIKey: RHFpU3lDekpnVVk5a2J4V2lGMVFBN05Z
+    APIKey: ChangeAndBase64EncodeMe
 
 istio:
   hosts:
