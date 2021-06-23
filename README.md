@@ -1,6 +1,6 @@
 # Go Microservice: NLP Client
 
-![GitHub Actions](https://github.com/garystafford/nlp-client/actions/workflows/main.yml/badge.svg)
+![GitHub Actions](https://github.com/garystafford/nlp-client/actions/workflows/test.yml/badge.svg)  ![GitHub Actions](https://github.com/garystafford/nlp-client/actions/workflows/image.yml/badge.svg)
 
 
 A Go-based microservice, part of a set of (5) microservices for the application used in the blog
