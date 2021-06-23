@@ -3,7 +3,7 @@
 This Helm 3 chart will install all Kubernetes resources to the `nlp-app` namespace for the NLP Application API. First,
 update your environment specific values in the chart's `values.yaml` file.
 
-Prerequisite: Metrics Server for HPA
+Prerequisite: Kubernetes Metrics Server for HPA
 
 <https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html>
 
